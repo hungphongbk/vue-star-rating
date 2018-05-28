@@ -1,5 +1,9 @@
 var path = require('path')
 var webpack = require('webpack')
+var UglifyJSPlugin = require('uglifyjs-webpack-plugin')
+var regexCombiner = require('regex-combiner')
+
+var nameCache = {}
 
 module.exports = {
     entry: {
@@ -33,11 +37,22 @@ module.exports = {
             minimize: true,
             debug: false
         }),
-        new webpack.optimize.UglifyJsPlugin({
+        new UglifyJSPlugin({
+            test: /\.js($|\?)/i,
+            cache: true,
+            parallel: false,
             sourceMap: true,
-            include: /\.min\.js$/,
-            compress: {
-                warnings: false
+            uglifyOptions: {
+                ie8: false,
+                mangle: {
+                  properties: {
+                    regex: regexCombiner([
+                      /^([A-Z][A-Z0-9]*_)([A-Z0-9]+_?)*$/,
+                      /^\$(style|createElement)$/
+                    ])
+                  }
+                },
+                nameCache: nameCache
             }
         })
     ],

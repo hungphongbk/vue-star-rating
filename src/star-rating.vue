@@ -4,7 +4,7 @@
             <span v-for="n in maxRating" :key="n" :class="[{'vue-star-rating-pointer': !readOnly }, 'vue-star-rating-star']" :style="{'margin-right': margin + 'px'}">
               <star :fill="fillLevel[n-1]" :size="starSize" :points="starPoints" :star-id="n" :step="step" :active-color="activeColor" :inactive-color="inactiveColor" :border-color="borderColor" :border-width="borderWidth" :rounded-corners="roundedCorners" @star-selected="setRating($event, true)" @star-mouse-move="setRating" :rtl="rtl" :glow="glow" :glow-color="glowColor"></star>
             </span>
-            <span v-if="showRating" :class="['vue-star-rating-rating-text', textClass]"> {{formattedRating}}</span>
+            <span v-if="showRating" :class="['vue-star-rating-rating-text', textClass]"> {{FORMATTED_RATING}}</span>
         </div>
     </div>
 </template>
@@ -128,7 +128,7 @@ export default {
         resetRating() {
             if (!this.readOnly) {
                 this.currentRating = this.selectedRating
-                this.createStars(this.shouldRound)
+                this.createStars(this.SHOULD_ROUND)
             }
         },
         createStars(round = true) {
@@ -149,10 +149,10 @@ export default {
         }
     },
     computed: {
-        formattedRating() {
+        FORMATTED_RATING() {
             return (this.fixedPoints === null) ? this.currentRating : this.currentRating.toFixed(this.fixedPoints)
         },
-        shouldRound() {
+        SHOULD_ROUND() {
             return this.ratingSelected || this.roundStartRating
         },
         margin() {
